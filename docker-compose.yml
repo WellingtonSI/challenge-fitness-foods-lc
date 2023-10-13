@@ -1,0 +1,17 @@
+php:
+  image: php:8.2-apache
+  container_name: apache-php-8.2
+  ports:
+  - 80:80
+  - 8000:8000
+  volumes: 
+  - ./:/var/www/html
+db:
+  image: postgres:latest
+  container_name: postgres
+  ports:
+  - 5432:5432
+  environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: fitness_food
