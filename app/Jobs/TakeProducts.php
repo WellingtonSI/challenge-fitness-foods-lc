@@ -52,7 +52,7 @@ class TakeProducts implements ShouldQueue
             $buffer = '';
             $counter = 0;
             while ($counter < 4) {
-                $buffer .= gzread($zp, 5); // Ler em partes de 5 Bytes
+                $buffer .= gzread($zp, 1); // Ler em partes de 1 Byte
                 
                 // Verificar se o buffer contém um objeto JSON completo
                 if (strpos($buffer, '{') !== false && strpos($buffer, '}') !== false) {
