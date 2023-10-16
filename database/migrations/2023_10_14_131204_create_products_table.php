@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('code');
+            $table->bigInteger('code')->primary();
             $table->string('status');
             $table->dateTime('imported_t');
             $table->string('url');
@@ -28,7 +27,7 @@ return new class extends Migration
             $table->string('cities')->nullable();
             $table->string('purchase_places')->nullable();
             $table->string('stores')->nullable();
-            $table->string('ingredients_text')->nullable();
+            $table->longText('ingredients_text')->nullable();
             $table->string('traces')->nullable();
             $table->string('serving_size')->nullable();
             $table->float('serving_quantity')->nullable();
