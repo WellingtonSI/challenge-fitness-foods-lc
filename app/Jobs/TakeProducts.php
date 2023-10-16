@@ -1,19 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Jobs;
 
+use App\Models\ErrorImport;
+use App\Models\FailedJob;
+use App\Models\LogImport;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 date_default_timezone_set('America/Sao_Paulo');
 
-class TesteController extends Controller
+class TakeProducts implements ShouldQueue
 {
-    public function testePegarDados(){
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-        $response = Http::get('https://challenges.coode.sh/food/data/json/index.txt');
-        dd(explode("\n",$response->body()));
+    /**
+     * Create a new job instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
         // URL do arquivo .gz
         $gzippedFileUrl = 'https://challenges.coode.sh/food/data/json/products_01.json.gz';
 
@@ -38,14 +56,9 @@ class TesteController extends Controller
                 
                 // Verificar se o buffer contém um objeto JSON completo
                 if (strpos($buffer, '{') !== false && strpos($buffer, '}') !== false) {
-                    //dd(json_decode($buffer));
-                   
-                    //if($acum == 2)
-                        //dd($buffer);
                         
                     $json = json_decode($buffer);
-                    //dd((int)preg_replace('/[^0-9\s]/', '', $json->code) );
-            
+
                     if ($json !== null) {
                         try {
                             Product::updateOrInsert(
@@ -76,7 +89,13 @@ class TesteController extends Controller
                                 ]);
                             
                         } catch (\Throwable $th) {
-                            dd($th);
+                            
+                            ErrorImport::create([
+                                'date_error' => date('Y-m-d H:i:s')
+                            ]);
+
+                            logs()->error($th);
+                            break;
                         }
                        
                         $counter++;
@@ -94,9 +113,16 @@ class TesteController extends Controller
         // Excluir o arquivo temporário .gz
         unlink($tempGzippedFile);
 
-        $picodememoria = memory_get_peak_usage();
+        $memorySpike = memory_get_peak_usage();
 
-        dd('pico de memória: '.(round(($picodememoria/1048576),2)).' MB', 'Tempo totl em segundos: '.  microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"], date('Y-m-d H:i:s'));
-       
+        try {
+            LogImport::create([
+                'last_import' => date('Y-m-d H:i:s'),
+                'memory_usage' => round(($memorySpike/1048576),2)
+            ]);    
+        } catch (\Throwable $th) {
+            logs()->error($th);
+        }
+        
     }
 }
