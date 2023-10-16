@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigInteger('code')->primary();
             $table->string('status');
             $table->dateTime('imported_t');
-            $table->string('url');
+            $table->longText('url');
             $table->string('creator');
             $table->bigInteger('created_t');
             $table->bigInteger('last_modified_t');
