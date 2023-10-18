@@ -13,9 +13,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->call(function () {
-        //    info('veio para a tarefa');
-        // })->everyMinute();
         $schedule->job(new TakeProducts)->everyMinute();
     }
 
