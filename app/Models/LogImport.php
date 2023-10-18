@@ -11,6 +11,8 @@ class LogImport extends Model
 
     protected $fillable = [
         'last_import',
-        'memory_usage_in_mb'
+        'memory_usage_in_mb',
+        'online_time_in_seconds',
+        'status'
     ];
 }

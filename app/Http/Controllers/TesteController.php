@@ -13,9 +13,13 @@ class TesteController extends Controller
 {
     public function testePegarDados(){
 
+        $start_time = microtime(true);
+
+       
         $response = Http::get('https://challenges.coode.sh/food/data/json/index.txt');
         $result = explode("\n",$response->body());
-        //  dd($result);
+        $end_time = microtime(true);
+        dd( $end_time - $start_time );
         foreach($result as $key_index => $fileName){
 
             if(!empty($fileName)){
@@ -39,7 +43,7 @@ class TesteController extends Controller
                     $buffer = '';
                     $counter = 0;
                     while ($counter < 4) {
-                        $buffer .= gzread($zp, 1); // Ler em partes de 5 Bytes
+                        $buffer .= gzread($zp, 1); // Ler em partes de 1 Byte
                         
                         // Verificar se o buffer contém um objeto JSON completo
                         if (strpos($buffer, '{') !== false && strpos($buffer, '}') !== false) {
@@ -69,6 +73,7 @@ class TesteController extends Controller
                                 set_time_limit(0);
                             } catch (Exception $e) {
                                 // Lidar com a exceção
+                                unlink($tempGzippedFile);
                                 dd($buffer, $fileName ,$key_index);
                                 echo "Exceção: " . $e->getMessage();
                                 // Ou, você pode lançar outra exceção se necessário
@@ -81,7 +86,7 @@ class TesteController extends Controller
                     
                             if ($json !== null) {
                                 try {
-                                    Product::updateOrInsert(
+                                    Product::updateOrCreate(
                                         ['code' => (int) preg_replace('/[^0-9\s]/', '', $json->code)],
                                         [
                                             'status'=> 'published',
@@ -110,6 +115,7 @@ class TesteController extends Controller
                                     
                                 } catch (\Throwable $th) {
                                     dd($th);
+                                    break 2;
                                 }
                             
                                 $counter++;
@@ -128,7 +134,7 @@ class TesteController extends Controller
                 unlink($tempGzippedFile);
 
                 $picodememoria = memory_get_peak_usage();
-
+                $end_time = microtime(true);
                 var_dump('pico de memória: '.(round(($picodememoria/1048576),2)).' MB', 'Tempo total em segundos: '.  microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"], date('Y-m-d H:i:s'));
             }
         }

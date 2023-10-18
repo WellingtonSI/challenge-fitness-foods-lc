@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('error_imports', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_error');
+            $table->foreignId('log_import_id')->constrained();
         });
     }
 

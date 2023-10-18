@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->dateTime('last_import');
             $table->float('memory_usage_in_mb');
+            $table->float('online_time_in_seconds');
+            $table->boolean('status');
             $table->timestamps();
         });
     }

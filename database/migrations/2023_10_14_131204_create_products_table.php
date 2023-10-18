@@ -17,8 +17,8 @@ return new class extends Migration
             $table->dateTime('imported_t');
             $table->longText('url');
             $table->string('creator');
-            $table->bigInteger('created_t');
-            $table->bigInteger('last_modified_t');
+            $table->dateTime('created_t');
+            $table->dateTime('last_modified_t');
             $table->string('product_name');
             $table->string('quantity')->nullable();
             $table->string('brands')->nullable();

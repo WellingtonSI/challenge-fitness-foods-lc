@@ -10,6 +10,7 @@ class ErrorImport extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date_error'
+        'date_error',
+        'log_import_id'
     ];
 }
