@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job(new TakeProducts)->everyMinute();
+        $schedule->job(new TakeProducts)->dailyAt('01:00')->timezone('America/Sao_Paulo');
     }
 
     /**
