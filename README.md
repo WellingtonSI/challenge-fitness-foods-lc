@@ -4,7 +4,7 @@
 Este desafio tem como objetivo dar suporte a equipe de nutricionistas da empresa Fitness Foods LC para que eles possam revisar de maneira rápida a informação nutricional dos alimentos que os usuários publicam pela aplicação móvel.
 
 # Processo
-Neste desafio, foram abordadas algumas complexidades ao lidar com arquivos muito grandes. Foi necessário recorrer a abordagens como abrir o arquivo e ler byte a byte para processar todas as informações e entender a estrutura interna dos dados. Além disso, compreender o tempo que o script levou para concluir todo o processo, bem como a quantidade de memória utilizada, foi um desafio
+Neste desafio, foram abordadas algumas complexidades ao lidar com arquivos muito grandes. Foi necessário recorrer a abordagens como abrir o arquivo e ler byte a byte para processar todas as informações e entender a estrutura interna dos dados. Além disso, compreender o tempo que o script levou para concluir todo o processo, bem como a quantidade de memória utilizada.
 
 # Como instalar e usar o projeto
 Neste projeto existe a possilibidade de utilizam de docker compose para criação do ambiente, basta dentro da raiz do projeto aplicar no comando no terminal `docker-compose up`, lembrando que é necessário ter o docker compose instalado em sua máquina.
